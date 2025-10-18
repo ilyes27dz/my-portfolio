@@ -1,0 +1,49 @@
+{
+  "projects": [
+    {
+      "title": "متجر إلكتروني",
+      "description": "منصة تجارة إلكترونية متكاملة",
+      "fullDescription": "موقع تجارة إلكترونية شامل مع نظام دفع آمن",
+      "image": "/projects/store.jpg",
+      "demoUrl": "https://store.com",
+      "githubUrl": "https://github.com/ilyes27dz/store",
+      "technologies": ["React", "Node.js", "MongoDB", "Tailwind"]
+    },
+    {
+      "title": "تطبيق دردشة",
+      "description": "تطبيق محادثة في الوقت الفعلي",
+      "fullDescription": "تطبيق دردشة مع AI ذكي",
+      "image": "/projects/chat.jpg",
+      "demoUrl": "https://chat.com",
+      "githubUrl": "https://github.com/ilyes27dz/chat",
+      "technologies": ["React", "TypeScript", "Node.js"]
+    },
+    {
+      "title": "موقع شركة",
+      "description": "موقع رسمي لشركة تقنية",
+      "fullDescription": "موقع احترافي مع لوحة تحكم",
+      "image": "/projects/company.jpg",
+      "demoUrl": "https://company.com",
+      "githubUrl": "https://github.com/ilyes27dz/company",
+      "technologies": ["Next.js", "Tailwind", "PostgreSQL"]
+    },
+    {
+      "title": "نظام حجز",
+      "description": "نظام حجز مواعيد حكومي",
+      "fullDescription": "منصة حجز مواعيد للخدمات الإدارية",
+      "image": "/projects/booking.jpg",
+      "demoUrl": "https://booking.com",
+      "githubUrl": "https://github.com/ilyes27dz/booking",
+      "technologies": ["PHP", "MySQL", "JavaScript"]
+    },
+    {
+      "title": "لوحة تحكم",
+      "description": "Dashboard إحصائيات متقدمة",
+      "fullDescription": "لوحة تحكم مع رسوم بيانية وإحصائيات",
+      "image": "/projects/dashboard.jpg",
+      "demoUrl": "https://dashboard.com",
+      "githubUrl": "https://github.com/ilyes27dz/dashboard",
+      "technologies": ["React", "Python", "MongoDB", "Express"]
+    }
+  ]
+}
