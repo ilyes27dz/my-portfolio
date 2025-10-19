@@ -2,14 +2,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
-import { SiReact, SiNextdotjs, SiTailwindcss, SiMongodb, SiNodedotjs, SiTypescript, SiHtml5, SiCss3, SiJavascript, SiExpress, SiPostgresql, SiPython, SiPhp, SiMysql } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiTailwindcss, SiMongodb, SiNodedotjs, SiTypescript, SiHtml5, SiCss3, SiJavascript, SiExpress, SiPostgresql, SiPython, SiPhp, SiMysql, SiPrisma } from 'react-icons/si';
 import Image from 'next/image';
 
-// قائمة الأيقونات المتاحة
 const techIcons: any = {
   'React': { icon: SiReact, color: 'text-cyan-400' },
   'Next.js': { icon: SiNextdotjs, color: 'text-white' },
+  'Next.js 14': { icon: SiNextdotjs, color: 'text-white' },
   'Tailwind': { icon: SiTailwindcss, color: 'text-cyan-400' },
+  'Tailwind CSS': { icon: SiTailwindcss, color: 'text-cyan-400' },
   'MongoDB': { icon: SiMongodb, color: 'text-green-500' },
   'Node.js': { icon: SiNodedotjs, color: 'text-green-500' },
   'TypeScript': { icon: SiTypescript, color: 'text-blue-600' },
@@ -21,48 +22,66 @@ const techIcons: any = {
   'Python': { icon: SiPython, color: 'text-yellow-500' },
   'PHP': { icon: SiPhp, color: 'text-indigo-600' },
   'MySQL': { icon: SiMysql, color: 'text-blue-500' },
+  'Prisma': { icon: SiPrisma, color: 'text-cyan-400' },
 };
 
 export default function Projects() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [projects, setProjects] = useState<any[]>([]);
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
     if (savedTheme) setTheme(savedTheme);
 
-    // تحميل المشاريع من JSON
     fetch('/projects.json')
       .then(res => res.json())
       .then(data => setProjects(data.projects))
       .catch(err => console.error('Error loading projects:', err));
   }, []);
 
-  const handlePrevious = () => {
-    if (selectedImageIndex !== null) {
-      setSelectedImageIndex(selectedImageIndex > 0 ? selectedImageIndex - 1 : projects.length - 1);
+  const handlePreviousImage = () => {
+    if (selectedProjectIndex !== null) {
+      const project = projects[selectedProjectIndex];
+      const images = project.images || [project.image];
+      setCurrentImageIndex(prev => (prev > 0 ? prev - 1 : images.length - 1));
     }
   };
 
-  const handleNext = () => {
-    if (selectedImageIndex !== null) {
-      setSelectedImageIndex(selectedImageIndex < projects.length - 1 ? selectedImageIndex + 1 : 0);
+  const handleNextImage = () => {
+    if (selectedProjectIndex !== null) {
+      const project = projects[selectedProjectIndex];
+      const images = project.images || [project.image];
+      setCurrentImageIndex(prev => (prev < images.length - 1 ? prev + 1 : 0));
     }
   };
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (selectedImageIndex !== null) {
-        if (e.key === 'ArrowLeft') handlePrevious();
-        if (e.key === 'ArrowRight') handleNext();
-        if (e.key === 'Escape') setSelectedImageIndex(null);
+      if (selectedProjectIndex !== null) {
+        if (e.key === 'ArrowLeft') handlePreviousImage();
+        if (e.key === 'ArrowRight') handleNextImage();
+        if (e.key === 'Escape') {
+          setSelectedProjectIndex(null);
+          setCurrentImageIndex(0);
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [selectedImageIndex, projects.length]);
+  }, [selectedProjectIndex, currentImageIndex]);
+
+  const openModal = (index: number) => {
+    setSelectedProjectIndex(index);
+    setCurrentImageIndex(0);
+  };
+
+  const closeModal = () => {
+    setSelectedProjectIndex(null);
+    setCurrentImageIndex(0);
+  };
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#0a0a0a] via-[#1a1a1a] to-[#0a0a0a] py-20 px-8" id="projects">
@@ -75,9 +94,7 @@ export default function Projects() {
         >
           <motion.h2 
             className="text-6xl md:text-8xl font-bold mb-6"
-            animate={{ 
-              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-            }}
+            animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
             transition={{ duration: 5, repeat: Infinity }}
             style={{
               backgroundImage: 'linear-gradient(90deg, #ffffff, #a3e635, #ffffff)',
@@ -113,10 +130,9 @@ export default function Projects() {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-lime-400 to-green-500 rounded-2xl blur opacity-0 hover:opacity-20 transition-opacity" />
               
               <div className="relative">
-                {/* Project Image with Zoom */}
                 <div 
                   className="relative h-56 overflow-hidden bg-gray-800 cursor-pointer group"
-                  onClick={() => setSelectedImageIndex(index)}
+                  onClick={() => openModal(index)}
                 >
                   <Image
                     src={project.image}
@@ -126,18 +142,15 @@ export default function Projects() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
                   
-                  {/* Zoom Icon */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
                     <ZoomIn className="w-12 h-12 text-lime-400" />
                   </div>
                 </div>
                 
-                {/* Content */}
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-white mb-3">{project.title}</h3>
                   <p className="text-gray-400 mb-4 text-sm leading-relaxed line-clamp-3">{project.description}</p>
                   
-                  {/* Technologies */}
                   <div className="grid grid-cols-2 gap-2 mb-4">
                     {project.technologies.slice(0, 4).map((tech: string, i: number) => {
                       const TechIcon = techIcons[tech]?.icon;
@@ -156,7 +169,6 @@ export default function Projects() {
                     })}
                   </div>
 
-                  {/* Buttons */}
                   <div className="flex gap-3">
                     <motion.a
                       href={project.demoUrl}
@@ -187,83 +199,117 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Image Lightbox Modal */}
+      {/* Enhanced Modal */}
       <AnimatePresence>
-        {selectedImageIndex !== null && (
+        {selectedProjectIndex !== null && (
           <>
-            {/* Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setSelectedImageIndex(null)}
-              className="fixed inset-0 bg-black/90 z-50 backdrop-blur-sm cursor-zoom-out"
+              onClick={closeModal}
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-50"
             />
 
-            {/* Image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 max-w-6xl max-h-[90vh] w-full px-4"
-            >
-              <div className="relative w-full h-full">
-                {/* Close Button */}
-                <button
-                  onClick={() => setSelectedImageIndex(null)}
-                  className="absolute -top-12 right-0 w-10 h-10 bg-lime-400 rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors z-10"
-                >
-                  <X className="w-5 h-5 text-gray-900" />
-                </button>
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: 50 }}
+                transition={{ type: 'spring', damping: 20 }}
+                className="relative w-full max-w-5xl bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-2xl rounded-3xl shadow-2xl border-2 border-lime-400/30 overflow-hidden"
+              >
+                {/* Glow Effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-lime-400 via-green-500 to-lime-400 rounded-3xl blur-xl opacity-30" />
 
-                {/* Previous Button */}
-                <motion.button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePrevious();
-                  }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-lime-400 rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors z-10"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <ChevronLeft className="w-6 h-6 text-gray-900" />
-                </motion.button>
+                {/* Content */}
+                <div className="relative">
+                  {/* Close Button */}
+                  <motion.button
+                    onClick={closeModal}
+                    className="absolute top-4 right-4 z-10 w-12 h-12 bg-lime-400/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors shadow-lg"
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <X className="w-6 h-6 text-gray-900" />
+                  </motion.button>
 
-                {/* Next Button */}
-                <motion.button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNext();
-                  }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-lime-400 rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors z-10"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <ChevronRight className="w-6 h-6 text-gray-900" />
-                </motion.button>
+                  {/* Image Container */}
+                  <div className="relative">
+                    <div className="relative aspect-video w-full overflow-hidden rounded-t-3xl bg-gray-950">
+                      <Image
+                        key={currentImageIndex}
+                        src={(projects[selectedProjectIndex].images?.[currentImageIndex]) || projects[selectedProjectIndex].image}
+                        alt={projects[selectedProjectIndex].title}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 1280px) 100vw, 1280px"
+                      />
+                    </div>
 
-                {/* Image */}
-                <div className="relative w-full h-[80vh] rounded-xl overflow-hidden">
-                  <Image
-                    key={selectedImageIndex}
-                    src={projects[selectedImageIndex].image}
-                    alt={projects[selectedImageIndex].title}
-                    fill
-                    className="object-contain"
-                  />
+                    {/* Navigation Arrows */}
+                    {(projects[selectedProjectIndex].images?.length > 1) && (
+                      <>
+                        <motion.button
+                          onClick={handlePreviousImage}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-lime-400/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors shadow-xl"
+                          whileHover={{ scale: 1.1, x: -5 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <ChevronLeft className="w-6 h-6 text-gray-900" />
+                        </motion.button>
+
+                        <motion.button
+                          onClick={handleNextImage}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-lime-400/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors shadow-xl"
+                          whileHover={{ scale: 1.1, x: 5 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <ChevronRight className="w-6 h-6 text-gray-900" />
+                        </motion.button>
+                      </>
+                    )}
+
+                    {/* Image Counter Dots */}
+                    {(projects[selectedProjectIndex].images?.length > 1) && (
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                        {projects[selectedProjectIndex].images.map((_: any, idx: number) => (
+                          <button
+                            key={idx}
+                            onClick={() => setCurrentImageIndex(idx)}
+                            className={`w-2 h-2 rounded-full transition-all ${
+                              idx === currentImageIndex ? 'bg-lime-400 w-6' : 'bg-white/50'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Project Info */}
+                  <div className="p-6">
+                    <h2 className="text-3xl font-bold text-white mb-2">
+                      {projects[selectedProjectIndex].title}
+                    </h2>
+                    <p className="text-gray-400 mb-4">
+                      {projects[selectedProjectIndex].fullDescription}
+                    </p>
+
+                    {/* Technologies */}
+                    <div className="flex flex-wrap gap-2">
+                      {projects[selectedProjectIndex].technologies.map((tech: string, i: number) => (
+                        <span
+                          key={i}
+                          className="px-3 py-1 bg-lime-400/10 text-lime-400 rounded-full text-sm font-medium border border-lime-400/20"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-
-                {/* Project Title */}
-                <div className="absolute -bottom-12 left-0 right-0 text-center">
-                  <h3 className="text-white text-xl font-bold">
-                    {projects[selectedImageIndex].title}
-                  </h3>
-                  <p className="text-gray-400 text-sm mt-1">
-                    {selectedImageIndex + 1} / {projects.length}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </>
         )}
       </AnimatePresence>

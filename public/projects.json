@@ -1,49 +1,26 @@
 {
   "projects": [
     {
-      "title": "متجر إلكتروني",
-      "description": "منصة تجارة إلكترونية متكاملة",
-      "fullDescription": "موقع تجارة إلكترونية شامل مع نظام دفع آمن",
-      "image": "/projects/store.jpg",
-      "demoUrl": "https://store.com",
-      "githubUrl": "https://github.com/ilyes27dz/store",
-      "technologies": ["React", "Node.js", "MongoDB", "Tailwind"]
-    },
-    {
-      "title": "تطبيق دردشة",
-      "description": "تطبيق محادثة في الوقت الفعلي",
-      "fullDescription": "تطبيق دردشة مع AI ذكي",
-      "image": "/projects/chat.jpg",
-      "demoUrl": "https://chat.com",
-      "githubUrl": "https://github.com/ilyes27dz/chat",
-      "technologies": ["React", "TypeScript", "Node.js"]
-    },
-    {
-      "title": "موقع شركة",
-      "description": "موقع رسمي لشركة تقنية",
-      "fullDescription": "موقع احترافي مع لوحة تحكم",
-      "image": "/projects/company.jpg",
-      "demoUrl": "https://company.com",
-      "githubUrl": "https://github.com/ilyes27dz/company",
-      "technologies": ["Next.js", "Tailwind", "PostgreSQL"]
-    },
-    {
-      "title": "نظام حجز",
-      "description": "نظام حجز مواعيد حكومي",
-      "fullDescription": "منصة حجز مواعيد للخدمات الإدارية",
-      "image": "/projects/booking.jpg",
-      "demoUrl": "https://booking.com",
-      "githubUrl": "https://github.com/ilyes27dz/booking",
-      "technologies": ["PHP", "MySQL", "JavaScript"]
-    },
-    {
-      "title": "لوحة تحكم",
-      "description": "Dashboard إحصائيات متقدمة",
-      "fullDescription": "لوحة تحكم مع رسوم بيانية وإحصائيات",
-      "image": "/projects/dashboard.jpg",
-      "demoUrl": "https://dashboard.com",
-      "githubUrl": "https://github.com/ilyes27dz/dashboard",
-      "technologies": ["React", "Python", "MongoDB", "Express"]
+      "title": "Qasr Baby Store",
+      "description": "متجر إلكتروني احترافي لمنتجات الأطفال",
+      "fullDescription": "منصة تجارة إلكترونية متكاملة لبيع منتجات الأطفال مع نظام إدارة متقدم ولوحة تحكم شاملة",
+      "image": "/projects/01.jpg",
+      "images": [
+        "/projects/7020.png",
+        "/projects/88.png",
+        "/projects/13.png",
+        "/projects/11.png"
+      ],
+      "demoUrl": "https://www.qasrradee.online/",
+      "githubUrl": "https://github.com/ilyes27dz/-qasr-baby",
+      "technologies": [
+        "Next.js 14",
+        "TypeScript",
+        "Tailwind CSS",
+        "MongoDB",
+        "Prisma",
+        "Node.js"
+      ]
     }
   ]
 }
