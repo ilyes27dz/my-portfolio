@@ -199,7 +199,7 @@ export default function About() {
                 whileHover={{ x: 5 }}
               >
                 <span className="text-gray-400 text-lg">Duration:</span>
-                <span className="text-lime-400 font-bold text-xl">2022 - 2024</span>
+                <span className="text-lime-400 font-bold text-xl">2023 - 2025</span>
               </motion.div>
 
               <motion.div 
