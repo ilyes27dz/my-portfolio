@@ -12,7 +12,6 @@ const navItems = [
   { name: 'CONTACT', href: '/contact' },
 ];
 
-
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -67,33 +66,44 @@ export default function Navbar() {
         }}
       >
         <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo مع أيقونة </> محسّنة */}
           <motion.a
             href="/"
-            className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}
+            className={`text-2xl font-bold flex items-center gap-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}
             whileHover={{ scale: 1.05 }}
           >
-            <span className="text-lime-400">im</span>Dev <span className="text-lime-400">/</span>
+            <motion.div 
+              className="w-9 h-9 bg-gradient-to-br from-lime-400 to-lime-500 rounded-lg flex items-center justify-center shadow-md"
+              whileHover={{ rotate: 5 }}
+            >
+              <svg className="w-5 h-5 text-gray-900 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            </motion.div>
+            <div className="flex items-center">
+              <span className="text-lime-400"></span>
+              <span></span>
+            </div>
           </motion.a>
 
-{/* Desktop Menu */}
-<div className="hidden md:flex items-center gap-8">
-  {navItems.map((item, index) => (
-    <motion.a
-      key={index}
-      href={item.href}
-      className={`font-medium transition-colors ${
-        theme === 'light' 
-          ? 'text-gray-700 hover:text-lime-500' 
-          : 'text-white hover:text-lime-400'
-      }`}
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      {item.name}
-    </motion.a>
-  ))}
-</div>
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-8">
+            {navItems.map((item, index) => (
+              <motion.a
+                key={index}
+                href={item.href}
+                className={`font-medium transition-colors ${
+                  theme === 'light' 
+                    ? 'text-gray-700 hover:text-lime-500' 
+                    : 'text-white hover:text-lime-400'
+                }`}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {item.name}
+              </motion.a>
+            ))}
+          </div>
 
           {/* Right Side - Theme + Download + Menu Button */}
           <div className="flex items-center gap-4">
@@ -122,7 +132,7 @@ export default function Navbar() {
               <Download className="w-5 h-5 text-gray-900" />
             </motion.a>
 
-            {/* Menu Button (3 Lines) - يفتح صفحة منبثقة */}
+            {/* Menu Button */}
             <motion.button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors shadow-lg"
@@ -180,11 +190,10 @@ export default function Navbar() {
         )}
       </motion.nav>
 
-      {/* Side Panel - معلوماتي */}
+      {/* Side Panel */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {/* Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -193,7 +202,6 @@ export default function Navbar() {
               className="fixed inset-0 bg-black/50 z-50"
             />
 
-            {/* Side Panel */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -204,7 +212,6 @@ export default function Navbar() {
               }`}
             >
               <div className="p-8">
-                {/* Close Button */}
                 <motion.button
                   onClick={() => setIsMenuOpen(false)}
                   className="absolute top-4 right-4 w-10 h-10 bg-lime-400 rounded-full flex items-center justify-center"
@@ -214,7 +221,6 @@ export default function Navbar() {
                   <X className="w-5 h-5 text-gray-900" />
                 </motion.button>
 
-                {/* Content */}
                 <div className="mt-16">
                   <h2 className={`text-3xl font-bold mb-2 ${
                     theme === 'light' ? 'text-gray-900' : 'text-white'
@@ -227,7 +233,6 @@ export default function Navbar() {
                     Building modern and responsive websites that blend creativity with clean code.
                   </p>
 
-                  {/* Information Section */}
                   <div className="space-y-6">
                     <h3 className={`text-xl font-bold mb-4 ${
                       theme === 'light' ? 'text-gray-900' : 'text-white'
@@ -238,17 +243,13 @@ export default function Navbar() {
                     <motion.a
                       href="tel:+213542038084"
                       className={`flex items-center gap-4 p-4 rounded-lg transition-colors ${
-                        theme === 'light'
-                          ? 'hover:bg-gray-100'
-                          : 'hover:bg-white/10'
+                        theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-white/10'
                       }`}
                       whileHover={{ x: 5 }}
                     >
                       <Phone className="w-5 h-5 text-lime-400" />
                       <div>
-                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                          Phone
-                        </p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Phone</p>
                         <p className={`font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                           +213 542 03 80 84
                         </p>
@@ -256,21 +257,17 @@ export default function Navbar() {
                     </motion.a>
 
                     <motion.a
-                      href="ilyes.negh@gmail.com"
+                      href="mailto:ilyes.negh@gmail.com"
                       className={`flex items-center gap-4 p-4 rounded-lg transition-colors ${
-                        theme === 'light'
-                          ? 'hover:bg-gray-100'
-                          : 'hover:bg-white/10'
+                        theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-white/10'
                       }`}
                       whileHover={{ x: 5 }}
                     >
                       <Mail className="w-5 h-5 text-lime-400" />
                       <div>
-                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                          Email
-                        </p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Email</p>
                         <p className={`font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                        ilyes.negh@gmail.com
+                          ilyes.negh@gmail.com
                         </p>
                       </div>
                     </motion.a>
@@ -282,17 +279,14 @@ export default function Navbar() {
                     >
                       <MapPin className="w-5 h-5 text-lime-400" />
                       <div>
-                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                          Location
-                        </p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Location</p>
                         <p className={`font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                          Sidi Lakhdar ,Mostaganem, Algeria
+                          Sidi Lakhdar, Mostaganem, Algeria
                         </p>
                       </div>
                     </motion.div>
                   </div>
 
-                  {/* Follow Us Section */}
                   <div className="mt-8">
                     <h3 className={`text-xl font-bold mb-4 ${
                       theme === 'light' ? 'text-gray-900' : 'text-white'
@@ -301,10 +295,15 @@ export default function Navbar() {
                     </h3>
 
                     <div className="flex gap-4">
-                      {['Instagram', 'Twitter', 'Behance', 'YouTube'].map((social, index) => (
+                      {[
+                        { name: 'Instagram', icon: '📷', link: '#' },
+                        { name: 'Twitter', icon: '🐦', link: '#' },
+                        { name: 'Behance', icon: '🎨', link: '#' },
+                        { name: 'YouTube', icon: '▶️', link: '#' }
+                      ].map((social, index) => (
                         <motion.a
                           key={index}
-                          href="#"
+                          href={social.link}
                           className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
                             theme === 'light'
                               ? 'bg-gray-100 hover:bg-lime-400 text-gray-900'
@@ -313,12 +312,7 @@ export default function Navbar() {
                           whileHover={{ scale: 1.1, y: -3 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <span className="text-xl">
-                            {social === 'Instagram' && '📷'}
-                            {social === 'Twitter' && '🐦'}
-                            {social === 'Behance' && '🎨'}
-                            {social === 'YouTube' && '▶️'}
-                          </span>
+                          <span className="text-xl">{social.icon}</span>
                         </motion.a>
                       ))}
                     </div>
