@@ -199,70 +199,98 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Enhanced Modal */}
-      <AnimatePresence>
+      {/* Modal - SMALLER SIZE + GREEN BUTTON */}
+      <AnimatePresence mode="wait">
         {selectedProjectIndex !== null && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
               onClick={closeModal}
-              className="fixed inset-0 bg-black/80 backdrop-blur-md z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 cursor-pointer"
             />
 
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-6 md:p-12 lg:p-16 pointer-events-none">
               <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                initial={{ opacity: 0, scale: 0.8, y: 30 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: 50 }}
-                transition={{ type: 'spring', damping: 20 }}
-                className="relative w-full max-w-5xl bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-2xl rounded-3xl shadow-2xl border-2 border-lime-400/30 overflow-hidden"
+                exit={{ opacity: 0, scale: 0.8, y: 30 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="relative w-full max-w-4xl pointer-events-auto"
               >
-                {/* Glow Effect */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-lime-400 via-green-500 to-lime-400 rounded-3xl blur-xl opacity-30" />
+                {/* Close Button - GREEN LIME */}
+                <motion.button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeModal();
+                  }}
+                  className="absolute -top-14 right-2 w-12 h-12 bg-lime-400 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-lime-500 transition-all shadow-2xl group z-[100]"
+                  whileHover={{ scale: 1.2, rotate: 90 }}
+                  whileTap={{ scale: 0.9, rotate: 180 }}
+                  initial={{ scale: 0, rotate: -90 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  exit={{ scale: 0, rotate: 90 }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                >
+                  <X className="w-6 h-6 text-gray-900 font-bold" />
+                </motion.button>
 
-                {/* Content */}
-                <div className="relative">
-                  {/* Close Button */}
-                  <motion.button
-                    onClick={closeModal}
-                    className="absolute top-4 right-4 z-10 w-12 h-12 bg-lime-400/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors shadow-lg"
-                    whileHover={{ scale: 1.1, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <X className="w-6 h-6 text-gray-900" />
-                  </motion.button>
+                {/* Modal Content - SMALLER */}
+                <div className="relative bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-2xl rounded-2xl shadow-2xl border-2 border-lime-400/30 overflow-hidden">
+                  <motion.div 
+                    className="absolute -inset-1 bg-gradient-to-r from-lime-400 via-green-500 to-lime-400 rounded-2xl blur-xl opacity-30"
+                    animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    style={{ backgroundSize: '200% 200%' }}
+                  />
 
-                  {/* Image Container */}
                   <div className="relative">
-                    <div className="relative aspect-video w-full overflow-hidden rounded-t-3xl bg-gray-950">
-                      <Image
-                        key={currentImageIndex}
-                        src={(projects[selectedProjectIndex].images?.[currentImageIndex]) || projects[selectedProjectIndex].image}
-                        alt={projects[selectedProjectIndex].title}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 1280px) 100vw, 1280px"
-                      />
+                    {/* Image - SMALLER */}
+                    <div className="relative h-[50vh] md:h-[60vh] w-full overflow-hidden rounded-t-2xl bg-gray-950">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={currentImageIndex}
+                          initial={{ opacity: 0, scale: 1.05 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute inset-0"
+                        >
+                          <Image
+                            src={(projects[selectedProjectIndex].images?.[currentImageIndex]) || projects[selectedProjectIndex].image}
+                            alt={projects[selectedProjectIndex].title}
+                            fill
+                            className="object-contain p-4"
+                            sizes="(max-width: 1024px) 100vw, 1024px"
+                          />
+                        </motion.div>
+                      </AnimatePresence>
                     </div>
 
-                    {/* Navigation Arrows */}
+                    {/* Arrows */}
                     {(projects[selectedProjectIndex].images?.length > 1) && (
                       <>
                         <motion.button
-                          onClick={handlePreviousImage}
-                          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-lime-400/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors shadow-xl"
-                          whileHover={{ scale: 1.1, x: -5 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePreviousImage();
+                          }}
+                          className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-lime-400/90 rounded-full flex items-center justify-center hover:bg-lime-500 shadow-xl"
+                          whileHover={{ scale: 1.15, x: -5 }}
                           whileTap={{ scale: 0.9 }}
                         >
                           <ChevronLeft className="w-6 h-6 text-gray-900" />
                         </motion.button>
 
                         <motion.button
-                          onClick={handleNextImage}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-lime-400/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-lime-500 transition-colors shadow-xl"
-                          whileHover={{ scale: 1.1, x: 5 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNextImage();
+                          }}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-lime-400/90 rounded-full flex items-center justify-center hover:bg-lime-500 shadow-xl"
+                          whileHover={{ scale: 1.15, x: 5 }}
                           whileTap={{ scale: 0.9 }}
                         >
                           <ChevronRight className="w-6 h-6 text-gray-900" />
@@ -270,41 +298,43 @@ export default function Projects() {
                       </>
                     )}
 
-                    {/* Image Counter Dots */}
+                    {/* Dots */}
                     {(projects[selectedProjectIndex].images?.length > 1) && (
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 bg-black/40 px-3 py-2 rounded-full">
                         {projects[selectedProjectIndex].images.map((_: any, idx: number) => (
                           <button
                             key={idx}
-                            onClick={() => setCurrentImageIndex(idx)}
-                            className={`w-2 h-2 rounded-full transition-all ${
-                              idx === currentImageIndex ? 'bg-lime-400 w-6' : 'bg-white/50'
-                            }`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentImageIndex(idx);
+                            }}
+                            className={`transition-all ${
+                              idx === currentImageIndex ? 'bg-lime-400 w-6 h-2.5' : 'bg-white/50 w-2.5 h-2.5'
+                            } rounded-full`}
                           />
                         ))}
                       </div>
                     )}
-                  </div>
 
-                  {/* Project Info */}
-                  <div className="p-6">
-                    <h2 className="text-3xl font-bold text-white mb-2">
-                      {projects[selectedProjectIndex].title}
-                    </h2>
-                    <p className="text-gray-400 mb-4">
-                      {projects[selectedProjectIndex].fullDescription}
-                    </p>
+                    {/* Info */}
+                    <div className="p-5">
+                      <h2 className="text-2xl font-bold text-white mb-2">
+                        {projects[selectedProjectIndex].title}
+                      </h2>
+                      <p className="text-gray-400 mb-3 text-sm">
+                        {projects[selectedProjectIndex].fullDescription}
+                      </p>
 
-                    {/* Technologies */}
-                    <div className="flex flex-wrap gap-2">
-                      {projects[selectedProjectIndex].technologies.map((tech: string, i: number) => (
-                        <span
-                          key={i}
-                          className="px-3 py-1 bg-lime-400/10 text-lime-400 rounded-full text-sm font-medium border border-lime-400/20"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                      <div className="flex flex-wrap gap-2">
+                        {projects[selectedProjectIndex].technologies.map((tech: string, i: number) => (
+                          <span
+                            key={i}
+                            className="px-2.5 py-1 bg-lime-400/10 text-lime-400 rounded-full text-xs font-medium border border-lime-400/20"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
